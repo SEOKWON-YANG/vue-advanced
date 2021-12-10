@@ -1,15 +1,29 @@
 <template>
-  <div>
-      jobs
+    <div>
+      <div v-for="(user, index) in users" :key="index">{{user.title}}</div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import {fetchJobsList} from '../api/index.js';
 
 export default {
-  created(){
-    axios.get('https://api.hnpwa.com/v0/jobs/1.json')
+  data(){
+    return{
+      users:[]
+    }
+  },
+   created(){
+    var vm = this;
+    fetchJobsList().then(
+      function(response){
+        console.log(response);
+        vm.users = response.data;
+      }
+    ).catch(function(error){
+      console.log(error)
+    })
+
   }
 
 }
